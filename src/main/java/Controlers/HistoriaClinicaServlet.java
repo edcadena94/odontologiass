@@ -1,4 +1,4 @@
-package Servlet;
+package Controlers;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -6,13 +6,13 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import Model.Paciente;
 
-@WebServlet("/PacienteServlet")
-public class PacienteServlet extends HttpServlet {
+@WebServlet("/historia_clinica")
+public class HistoriaClinicaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Redirigir al formulario
+        // Redirige al formulario
         RequestDispatcher dispatcher = request.getRequestDispatcher("historia_clinica.jsp");
         dispatcher.forward(request, response);
     }
@@ -34,27 +34,7 @@ public class PacienteServlet extends HttpServlet {
             paciente.setTelefono(request.getParameter("telefono"));
             paciente.setEmail(request.getParameter("email"));
 
-            // Datos numéricos - con manejo de posibles valores vacíos
-            try {
-                paciente.setEstatura(Double.parseDouble(request.getParameter("estatura")));
-                paciente.setPeso(Double.parseDouble(request.getParameter("peso")));
-                paciente.setTemperatura(Double.parseDouble(request.getParameter("temperatura")));
-                paciente.setFrecuenciaRespiratoria(Double.parseDouble(request.getParameter("frecuenciaRespiratoria")));
-                paciente.setPresionSistolica(Double.parseDouble(request.getParameter("presionSistolica")));
-            } catch (NumberFormatException e) {
-                // Manejar campos numéricos vacíos o inválidos
-            }
-
-            // Antecedentes y otros datos
-            paciente.setVacunacion(request.getParameter("vacunacion"));
-            paciente.setAlergias(request.getParameter("alergias"));
-            paciente.setAntecedentesPatologicos(request.getParameter("antecedentesPatologicos"));
-            paciente.setAntecedentesNoPatologicos(request.getParameter("antecedentesNoPatologicos"));
-            paciente.setAntecedentesPsiquiatricos(request.getParameter("antecedentesPsiquiatricos"));
-
-            // Aquí podrías agregar la lógica para guardar en base de datos
-
-            // Enviar el paciente a la vista
+            // Enviar datos a vista de confirmación
             request.setAttribute("paciente", paciente);
             request.setAttribute("mensaje", "Historia clínica guardada exitosamente");
             RequestDispatcher dispatcher = request.getRequestDispatcher("vista_paciente.jsp");

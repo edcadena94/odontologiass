@@ -114,8 +114,9 @@
         </div>
         <% } %>
 
-        <form method="post" action="LoginServlet">
-            <div class="mb-4">
+        <form method="post" action="${pageContext.request.contextPath}/login">
+
+        <div class="mb-4">
                 <label for="username" class="form-label">Correo Electrónico</label>
                 <input type="email"
                        class="form-control"

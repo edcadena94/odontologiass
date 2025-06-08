@@ -140,6 +140,13 @@
         <button type="submit" class="button">Guardar Historia Clínica</button>
     </form>
 </div>
+<div class="user-info" style="position: absolute; top: 10px; right: 10px;">
+    <span class="text-white">
+        Usuario: <%= session.getAttribute("usuario") %>
+        (<%= session.getAttribute("rol") %>)
+    </span>
+    <a href="logout" class="btn btn-outline-light btn-sm ms-2">Cerrar Sesión</a>
+</div>
 
 </body>
 </html>

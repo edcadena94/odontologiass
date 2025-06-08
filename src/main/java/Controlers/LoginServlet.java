@@ -1,17 +1,16 @@
+package Controlers;
 
-package Servlet;
-
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import Model.Usuario;
+import Service.UsuarioService;
+
 import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
-    // Credenciales fijas
-    private static final String USUARIO_CORRECTO = "lesly@gmail.com";
-    private static final String PASSWORD_CORRECTO = "odontoloogia145";
+    private final UsuarioService usuarioService = new UsuarioService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -20,27 +19,28 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Validación básica de entrada
-        if (username == null || password == null ||
-                username.trim().isEmpty() || password.trim().isEmpty()) {
+        if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
             mostrarError(request, response, "Por favor complete todos los campos");
             return;
         }
 
-        // Validación de credenciales
-        if (USUARIO_CORRECTO.equals(username) && PASSWORD_CORRECTO.equals(password)) {
-            // Crear sesión
+        Usuario usuario = usuarioService.autenticar(username.trim(), password.trim());
+        if (usuario != null) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("username", username);
-            session.setMaxInactiveInterval(1800); // 30 minutos
+            session.setAttribute("usuario", username);
+            session.setAttribute("rol", usuario.getRol());
+            session.setMaxInactiveInterval(1800);
 
-            // Agregar cookie segura
             Cookie sessionCookie = new Cookie("JSESSIONID", session.getId());
             sessionCookie.setHttpOnly(true);
             sessionCookie.setSecure(true);
             response.addCookie(sessionCookie);
 
-            response.sendRedirect("index.jsp");
+            if ("DOCTOR".equals(usuario.getRol())) {
+                response.sendRedirect("historia_clinica.jsp");
+            } else {
+                response.sendRedirect("agendar-cita.jsp");
+            }
         } else {
             mostrarError(request, response, "Usuario o contraseña incorrectos");
         }

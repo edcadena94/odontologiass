@@ -1,4 +1,4 @@
-package Servlet;
+package Controlers;
 
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
