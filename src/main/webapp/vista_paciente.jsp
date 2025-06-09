@@ -1,3 +1,4 @@
+<%@ page import="com.odontologia.models.Paciente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -21,7 +22,7 @@
 
     <h2>Información del Paciente</h2>
 
-    <% Model.Paciente paciente = (Model.Paciente) request.getAttribute("paciente"); %>
+    <% Paciente paciente = (Paciente) request.getAttribute("paciente"); %>
 
     <div class="data-group">
         <p><span class="label">Nombre:</span> <%= paciente.getNombre() %></p>

@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>Controlers.LoginServlet</servlet-class>
+        <servlet-class>com.odontologia.controllers.LoginServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
