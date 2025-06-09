@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Secretaria {
+public class Recepcionista {
     private int id;
     private String nombre;
     private String correo;
