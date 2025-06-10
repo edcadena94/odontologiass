@@ -7,7 +7,7 @@ public class PasswordUtil {
 
     // Genera el hash encriptado de una contraseña
     public static String hashPassword(String plainPassword) {
-        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12));
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(29));
     }
 
     // Verifica si una contraseña coincide con el hash
