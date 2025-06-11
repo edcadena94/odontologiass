@@ -2,6 +2,16 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.odontologia.models.Paciente" %>
 <%@ page import="com.odontologia.models.Doctor" %>
+
+<%-- Control de acceso: solo recepcionista --%>
+<%
+    String rol = (String) session.getAttribute("rol");
+    if (rol == null || !"recepcionista".equals(rol)) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>

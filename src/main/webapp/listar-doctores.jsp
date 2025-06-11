@@ -119,7 +119,7 @@
 
   <!-- Navegación -->
   <div class="mt-4 text-center">
-    <a href="index.jsp" class="btn btn-secondary">
+    <a href="index1.jsp" class="btn btn-secondary">
       <i class="fas fa-home me-2"></i>Volver al Inicio
     </a>
   </div>

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -41,20 +42,19 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("usuario", username);
                     session.setAttribute("rol", role);
 
-                    // Redirección según rol
-                    if ("doctor".equals(role)) {
-                        response.sendRedirect("doctor/dashboard.jsp");
-                    } else if ("recepcionista".equals(role)) {
-                        response.sendRedirect("recepcionista/dashboard.jsp");
-                    } else {
-                        request.setAttribute("error", "Rol desconocido");
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
-                    }
+                    // Redirección segura según rol
+                    String redirectPage = "recepcionista".equals(role) ? "cabecero-recep.jsp" : "listar-doctores.jsp";
+                    response.sendRedirect(redirectPage);
                     return;
+                } else {
+                    request.setAttribute("error", "Contraseña incorrecta");
                 }
+            } else {
+                // Simular verificación para evitar timing attacks
+                PasswordUtil.checkPassword("dummy", BCrypt.gensalt());
+                request.setAttribute("error", "Usuario no encontrado");
             }
 
-            request.setAttribute("error", "Usuario o contraseña incorrectos");
             request.getRequestDispatcher("login.jsp").forward(request, response);
 
         } catch (SQLException e) {

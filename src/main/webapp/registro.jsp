@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: USUARIO
-  Date: 9/6/2025
-  Time: 20:32
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -12,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Smile Center - Registro</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/registro.css" />
@@ -60,16 +52,19 @@
                        id="password"
                        name="password"
                        required
-                       placeholder="Crea una contraseña segura"
+                       placeholder="Crea una contraseña segura (mín. 8 caracteres, 1 mayúscula, 1 número)"
                        autocomplete="new-password" />
                 <div class="invalid-feedback">
                     <%
                         if (request.getAttribute("errorPassword") != null) {
                             out.print(request.getAttribute("errorPassword"));
                         } else { %>
-                    Por favor ingresa una contraseña.
+                    La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.
                     <% } %>
                 </div>
+                <small class="form-text text-muted">
+                    Ejemplo: Smile2025
+                </small>
             </div>
 
             <div class="mb-3">
@@ -110,6 +105,8 @@
     (() => {
         'use strict';
         const forms = document.querySelectorAll('.needs-validation');
+
+        // Validación estándar de Bootstrap
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
                 if (!form.checkValidity()) {
@@ -118,6 +115,36 @@
                 }
                 form.classList.add('was-validated');
             }, false);
+        });
+
+        // Validación personalizada de contraseña
+        const passwordField = document.getElementById('password');
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+        passwordField.addEventListener('input', function() {
+            const feedbackElement = this.nextElementSibling;
+
+            if (!passwordRegex.test(this.value)) {
+                this.classList.add('is-invalid');
+                feedbackElement.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula y un número';
+            } else {
+                this.classList.remove('is-invalid');
+                feedbackElement.textContent = 'Por favor ingresa una contraseña.';
+            }
+        });
+
+        // Validación antes de enviar el formulario
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!passwordRegex.test(passwordField.value)) {
+                e.preventDefault();
+                passwordField.classList.add('is-invalid');
+                const feedbackElement = passwordField.nextElementSibling;
+                feedbackElement.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula y un número';
+
+                // Desplazarse al campo de contraseña
+                passwordField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                passwordField.focus();
+            }
         });
     })();
 </script>
