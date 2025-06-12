@@ -45,9 +45,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
-                <li class="nav-item"><a class="nav-link" href="#testimonios">Testimonios</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contacto">Contáctanos</a></li>
                 <!-- Panel de Administración -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -61,7 +58,7 @@
                         <li><a class="dropdown-item" href="login.jsp"><i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="btn btn-modern ms-3" href="cita">Agendar Cita</a></li>
+                <li class="nav-item"><a class="btn btn-modern ms-3" href="cita">Cerrar Sesioon</a></li>
             </ul>
         </div>
     </div>
@@ -121,7 +118,7 @@
 </section>
 
 </body>
-</html> btn-outline-primary">Reservar</a>
+</html>
 </div>
 </div>
 </div>

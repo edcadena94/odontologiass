@@ -2,109 +2,90 @@
   Created by IntelliJ IDEA.
   User: USUARIO
   Date: 11/6/2025
-  Time: 8:51
+  Time: 16:05
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Clínica Dental</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smile Center - Clínica de Implantes Dentales y Odontología Integral</title>
 
-    <!-- Bootstrap CSS desde CDN -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Font Awesome desde CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- AdminLTE CSS desde CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.18/css/skins/_all-skins.min.css">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/public/img/apple-touch-icon.png">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/public/img/favicon.ico">
-    <!-- DataTables CSS desde CDN -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css">
-    <!-- Bootstrap Select CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-</head>
+    <!-- Bootstrap CSS y JS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <link rel="stylesheet" href="css/cabecero-rep.css">
 
-<body class="hold-transition skin-blue-light sidebar-mini">
-<div class="wrapper">
+    <!-- Icono favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
-    <header class="main-header">
-        <a href="index2.html" class="logo">
-            <span class="logo-mini"><b>CD</b></span>
-            <span class="logo-lg"><b>Clínica Dental</b></span>
-        </a>
-        <nav class="navbar navbar-static-top" role="navigation">
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Navegación</span>
-            </a>
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Dr. John Doe</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="user-header">
-                                <img src="" class="img-circle" alt="User Image">
-                                <p>
-                                    Dr. John Doe
-                                    <small>Odontólogo</small>
-                                </p>
-                            </li>
-                            <li class="user-footer">
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Cerrar</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <!-- Google Fonts y FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    <aside class="main-sidebar">
-        <section class="sidebar">
-            <ul class="sidebar-menu">
-                <li class="header">MENÚ PRINCIPAL</li>
-                <li>
-                    <a href="login.jsp">
-                        <i class="fa fa-cogs"></i> <span>Login</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-tasks"></i> <span>Escritorio</span>
-                    </a>
-                </li>
-
-                <li><a href="${pageContext.request.contextPath}/agendar-cita.jsp"><i class="fa fa-circle-o"></i> Agendar Cita</a></li>
-                <li><a href="${pageContext.request.contextPath}/listar-doctores.jsp"><i class="fa fa-circle-o"></i> Nuevo Doctor</a></li>
-                <li><a href="${pageContext.request.contextPath}/ver-paciente.jsp"><i class="fa fa-circle-o"></i> Ver Pacientes</a></li>
-                <!-- Sección de Pacientes eliminada -->
-                <li>
-                    <a href="#">
-                        <i class="fa fa-plus-square"></i> <span>Ayuda</span>
-                        <small class="label pull-right bg-red">PDF</small>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-info-circle"></i> <span>Acerca De...</span>
-                        <small class="label pull-right bg-yellow">IT</small>
-                    </a>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.jsp">Smile Center</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="btn btn-danger ms-3" href="login.jsp">Cerrar Sesión</a>
                 </li>
             </ul>
-        </section>
-    </aside>
-</div>
+        </div>
+    </div>
+</nav>
+
+<!-- Panel de Acceso Rápido para la Recepcionista -->
+<section class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">
+                        <i class="fas fa-tachometer-alt me-2 text-primary"></i>Recepcionista
+                    </h5>
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-md-6">
+                            <a href="cita" class="card admin-card text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-calendar-plus fa-3x text-success mb-3"></i>
+                                    <h6 class="card-title">Nueva Cita</h6>
+                                    <p class="small text-muted">Agendar cita médica</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="paciente?accion=nuevo" class="card admin-card text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-plus fa-3x text-info mb-3"></i>
+                                    <h6 class="card-title">Nuevo Paciente</h6>
+                                    <p class="small text-muted">Registrar paciente</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4">
+        <p class="mb-0">© 2025 Smile Center - Todos los derechos reservados</p>
+</footer>
 
 </body>
 </html>

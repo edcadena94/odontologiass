@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("rol", role);
 
                     // Redirección segura según rol
-                    String redirectPage = "recepcionista".equals(role) ? "cabecero-recep.jsp" : "listar-doctores.jsp";
+                    String redirectPage = "recepcionista".equals(role) ? "cabecero-recep.jsp" : "index1.jsp";
                     response.sendRedirect(redirectPage);
                     return;
                 } else {

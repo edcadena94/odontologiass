@@ -1,67 +1,106 @@
 /* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
-    color: #333;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fa; /* Color de fondo suave */
+    color: #333; /* Color de texto oscuro */
 }
 
-/* Estilos del encabezado */
-.main-header {
-    background-color: #2c3e50;
-    color: #fff;
+/* Navbar */
+.navbar {
+    background-color: #007bff; /* Color de fondo de la navbar */
 }
 
-.main-header .logo {
-    background-color: #2c3e50;
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
-.main-header .navbar {
-    background-color: #2c3e50;
+.navbar-nav .nav-link {
+    color: white !important; /* Color del texto de los enlaces */
 }
 
-/* Estilos del menú lateral */
-.main-sidebar {
-    background-color: #34495e;
+.navbar-nav .nav-link:hover {
+    color: #ffcc00 !important; /* Color al pasar el mouse */
 }
 
-.sidebar-menu > li > a {
-    color: #b8c7ce;
+/* Estilos del panel de acceso rápido */
+.card {
+    border-radius: 15px; /* Bordes redondeados */
 }
 
-.sidebar-menu > li.active > a {
-    background-color: #1a2732;
-    color: #fff;
+.card-title {
+    font-weight: 600;
+    font-size: 1.5rem; /* Tamaño de fuente del título */
 }
 
-/* Estilos para los botones */
-.btn-flat {
-    background-color: #2c3e50;
-    color: white;
+.admin-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido verticalmente */
+    transition: transform 0.3s ease; /* Animación al pasar el mouse */
+    border: none;
+    border-radius: 10px;
+    background: #ffffff; /* Fondo blanco para las tarjetas */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.btn-flat:hover {
-    background-color: #34495e;
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos para el pie de página */
-.user-footer {
-    background-color: #f9f9f9;
-    text-align: center;
+/* Estilos del footer */
+footer {
+    background-color: #343a40; /* Color de fondo del footer */
+}
+.row.justify-content-center {
+    display: flex;
+    justify-content: center;
 }
 
-/* Estilos de tablas */
-table.dataTable {
-    width: 100%;
-    margin: 20px 0;
+
+footer h6 {
+    font-weight: bold;
 }
 
-.dataTable th, .dataTable td {
-    padding: 10px;
-    text-align: left;
+footer p {
+    margin-bottom: 0.5rem; /* Espaciado del texto */
 }
 
-/* Estilo para etiquetas de notificación */
-.label {
-    border-radius: 3px;
-    padding: 5px 10px;
+footer a {
+    color: #ffcc00; /* Color de los enlaces en el footer */
+}
+
+footer a:hover {
+    text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+/* Estilos para botones */
+.btn {
+    border-radius: 20px; /* Bordes redondeados para botones */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Color de fondo para el botón de cerrar sesión */
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Color al pasar el mouse */
+}
+
+/* Estilo para el texto de la sección */
+.text-muted {
+    color: #6c757d; /* Color de texto apagado */
+}
+
+/* Ajustes de márgenes y espaciados */
+.my-5 {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+}
+
+.g-4 {
+    gap: 1.5rem; /* Espaciado entre columnas */
 }
