@@ -5,6 +5,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.security.SecureRandom;
 import java.util.regex.Pattern;
 
+/**
+ * Utilidad para manejo seguro de contraseñas.
+ */
 public class PasswordUtil {
 
     // Configuración de seguridad
