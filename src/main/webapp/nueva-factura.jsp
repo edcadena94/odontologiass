@@ -93,6 +93,23 @@
                 </div>
             </div>
 
+            <!-- Campo Descripción -->
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción/Motivo de la Factura</label>
+                <textarea
+                        class="form-control"
+                        id="descripcion"
+                        name="descripcion"
+                        rows="3"
+                        maxlength="255"
+                        placeholder="Escriba el motivo de la factura"
+                        required
+                ><%= request.getParameter("descripcion") != null ? request.getParameter("descripcion") : "" %></textarea>
+                <div class="invalid-feedback">
+                    Es obligatorio escribir el motivo de la factura.
+                </div>
+            </div>
+
             <div class="d-flex justify-content-between">
                 <a href="factura?accion=listar" class="btn btn-secondary">Volver</a>
                 <button type="submit" class="btn btn-success">Guardar Factura</button>
@@ -117,6 +134,7 @@
                 // Validación personalizada de solo números para numeroFactura y idPaciente.
                 const numeroFactura = document.getElementById('numeroFactura');
                 const idPaciente = document.getElementById('idPaciente');
+                const descripcion = document.getElementById('descripcion');
                 const numRegex = /^[0-9]+$/;
 
                 let valid = true;
@@ -133,6 +151,13 @@
                     valid = false;
                 } else {
                     idPaciente.classList.remove('is-invalid');
+                }
+
+                if (!descripcion.value.trim()) {
+                    descripcion.classList.add('is-invalid');
+                    valid = false;
+                } else {
+                    descripcion.classList.remove('is-invalid');
                 }
 
                 if (!form.checkValidity() || !valid) {
