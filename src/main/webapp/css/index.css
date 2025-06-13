@@ -213,3 +213,12 @@ footer {
         justify-content: center;
     }
 }
+html {
+    scroll-behavior: smooth; /* Scroll suave */
+    scroll-padding-top: 80px; /* Espacio para navbar fija - ajusta según altura de tu navbar */
+}
+
+/* Asegurar que el navbar tenga altura definida para el cálculo */
+.navbar {
+    min-height: 70px; /* Ajusta según tu navbar */
+}

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class PasswordUtil {
 
     // Configuración de seguridad
-    private static final int BCRYPT_LOG_ROUNDS = 2; // Coste computacional (12 es un buen balance)
+    private static final int BCRYPT_LOG_ROUNDS = 12; // Coste computacional (12 es un buen balance)
     private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*\\d).{8,}$"; // 8 chars, 1 mayúscula, 1 número
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 

@@ -22,10 +22,20 @@
     <!-- Floating WhatsApp CSS -->
     <link rel="stylesheet" href="https://rawcdn.githack.com/jerfeson/floating-whatsapp/0310b4cd88e9e55dc637d1466670da26b645ae49/floating-wpp.min.css" />
 
-
-
     <!-- Floating WhatsApp JS -->
     <script type="text/javascript" src="https://rawcdn.githack.com/jerfeson/floating-whatsapp/0310b4cd88e9e55dc637d1466670da26b645ae49/floating-wpp.min.js" defer></script>
+    <style>
+        /* NUEVO CSS: Para que el scroll sea suave y centrado */
+        html {
+            scroll-behavior: smooth; /* Scroll suave */
+            scroll-padding-top: 80px; /* Espacio para navbar fija - ajusta según altura de tu navbar */
+        }
+
+        /* Asegurar que el navbar tenga altura definida para el cálculo */
+        .navbar {
+            min-height: 70px; /* Ajusta según tu navbar */
+        }
+    </style>
 </head>
 
 <body>
@@ -40,8 +50,8 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
-                <li class="nav-item"><a class="nav-link" href="historia_clinica.html">Promociones</a></li>
-                <li class="nav-item"><a class="nav-link" href="agendar-cita.html">Contáctanos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#acerca">Acerca de Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="#encuentranos">Encuetranos</a></li>
                 <li class="nav-item"><a class="btn btn-modern ms-3" href="login.jsp">Iniciar Sesión</a></li>
             </ul>
         </div>
@@ -111,27 +121,24 @@
     </div>
 </section>
 
-<!-- Modal Cita -->
-<div class="modal fade" id="modalCitaAgendada" tabindex="-1" aria-labelledby="modalCitaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 shadow">
-            <div class="modal-header bg-primary text-white border-0">
-                <h5 class="modal-title" id="modalCitaLabel">Cita Agendada</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+<!-- Testimonios -->
+<section id="acerca" class="py-5 bg-light">
+    <div class="container">
+        <!-- NUEVA ESTRUCTURA: Primero información de la clínica -->
+        <h2 class="text-center mb-5 text-primary fw-bold">Acerca de Nosotros</h2>
+        <div class="row text-center mb-5">
+            <div class="col-md-6 mb-4">
+                <h5>Nuestra Misión</h5>
+                <p>Brindar servicios odontológicos de calidad con tecnología avanzada y atención personalizada para cada paciente.</p>
             </div>
-            <div class="modal-body text-center">
-                <p>¡Gracias por agendar tu cita con Smile Center!</p>
-                <p>Nos pondremos en contacto contigo para confirmar los detalles.</p>
-                <i class="fas fa-check-circle fa-4x text-success"></i>
+            <div class="col-md-6 mb-4">
+                <h5>Nuestro Compromiso</h5>
+                <p>Garantizar la salud bucal y la sonrisa perfecta de nuestros pacientes con profesionalismo y calidez humana.</p>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Testimonios -->
-<section id="testimonios" class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center mb-5 text-primary fw-bold">Testimonios de Nuestros Pacientes</h2>
+        <!-- TESTIMONIOS INTEGRADOS: Ahora forman parte de "Acerca de Nosotros" -->
+        <h3 class="text-center mb-4 text-primary fw-bold">Testimonios de Nuestros Pacientes</h3>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card p-3 shadow-sm h-100 border-0">
@@ -174,22 +181,71 @@
 </section>
 
 <!-- Ubicación -->
-<section class="mb-5">
+<section id="encuentranos" class="mb-5">
     <div class="card mx-auto" style="max-width: 800px;">
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">Ubicación</h2>
+            <h2 class="card-title text-center mb-4">Encuéntranos</h2>
             <div class="ratio ratio-16x9">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7651537512!2d-78.49600988582161!3d-0.18046789986060375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59b4c7d0f6d1d%3A0x4a8d11d4f8d8f3b5!2sSmile%20Center%20-%20Cl%C3%ADnica%20de%20Implantes%20Dentales%20y%20Odontolog%C3%ADa%20Integral!5e0!3m2!1ses!2sec!4v1685686800000!5m2!1ses!2sec"
                         style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>
+
 </section>
 
 <!-- Footer -->
-<footer class="text-center">
+<footer class="bg-dark text-white py-5">
     <div class="container">
-        <p class="mb-1">© 2025 Smile Center - Todos los derechos reservados</p>
+        <div class="row g-4">
+            <!-- Información de la Clínica -->
+            <div class="col-lg-4">
+                <h5 class="text-primary fw-bold mb-3">Smile Center</h5>
+                <p class="mb-3">Clínica de Implantes Dentales y Odontología Integral. Tu sonrisa es nuestra prioridad.</p>
+                <p class="mb-0">© 2025 Smile Center - Todos los derechos reservados</p>
+            </div>
+
+            <!-- Contacto -->
+            <div class="col-lg-4">
+                <h5 class="text-primary fw-bold mb-3">Contacto</h5>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-phone text-primary me-3"></i>
+                    <a href="tel:+593993274512" class="text-white text-decoration-none">+593 99 327 4512</a>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-envelope text-primary me-3"></i>
+                    <a href="mailto:info@smilecenter.com" class="text-white text-decoration-none">info@smilecenter.com</a>
+                </div>
+                <div class="d-flex align-items-start mb-2">
+                    <i class="fas fa-map-marker-alt text-primary me-3 mt-1"></i>
+                    <span>Av. Principal 123<br>Quito, Ecuador</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-clock text-primary me-3"></i>
+                    <span>Lun-Vie: 8:00-18:00<br>Sáb: 8:00-14:00</span>
+                </div>
+            </div>
+
+            <!-- Redes Sociales -->
+            <div class="col-lg-4">
+                <h5 class="text-primary fw-bold mb-3">Síguenos</h5>
+                <div class="d-flex gap-3 mb-3">
+                    <a href="https://facebook.com/smilecenter" target="_blank" class="btn btn-outline-light rounded-circle p-2">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://instagram.com/smilecenter" target="_blank" class="btn btn-outline-light rounded-circle p-2">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://tiktok.com/@smilecenter" target="_blank" class="btn btn-outline-light rounded-circle p-2">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://wa.me/593993274512" target="_blank" class="btn btn-outline-success rounded-circle p-2">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+                <p class="mb-0">Mantente conectado con nosotros para recibir tips de salud bucal y promociones.</p>
+            </div>
+        </div>
     </div>
 </footer>
 
