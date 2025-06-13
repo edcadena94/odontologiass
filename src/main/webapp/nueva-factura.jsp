@@ -98,10 +98,6 @@
                 <button type="submit" class="btn btn-success">Guardar Factura</button>
             </div>
         </form>
-
-        <div class="text-center mt-3">
-            <span>¿Ya tienes cuenta? <a href="login.jsp">Inicia sesión</a></span>
-        </div>
     </div>
 
     <div class="footer-text text-center mt-4">

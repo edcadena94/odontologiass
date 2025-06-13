@@ -26,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
+</head>
 <body>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
@@ -56,7 +56,7 @@
                         <i class="fas fa-tachometer-alt me-2 text-primary"></i>Recepcionista
                     </h5>
                     <div class="row g-4 justify-content-center">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <a href="cita" class="card admin-card text-decoration-none">
                                 <div class="card-body text-center">
                                     <i class="fas fa-calendar-plus fa-3x text-success mb-3"></i>
@@ -65,8 +65,8 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-md-6">
-                            <a href="registrarPaciente.jsp" class="card admin-card text-decoration-none">
+                        <div class="col-md-4">
+                            <a href="paciente?accion=nuevo" class="card admin-card text-decoration-none">
                                 <div class="card-body text-center">
                                     <i class="fas fa-user-plus fa-3x text-info mb-3"></i>
                                     <h6 class="card-title">Nuevo Paciente</h6>
@@ -74,8 +74,16 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-md-4">
+                            <a href="factura?accion=listar" class="card admin-card text-decoration-none">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-invoice-dollar fa-3x text-primary mb-3"></i>
+                                    <h6 class="card-title">Gestión de Facturas</h6>
+                                    <p class="small text-muted">Ver, crear o editar facturas</p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-
 
                 </div>
             </div>
@@ -85,7 +93,7 @@
 
 <!-- Footer -->
 <footer class="bg-dark text-white text-center py-4">
-        <p class="mb-0">© 2025 Smile Center - Todos los derechos reservados</p>
+    <p class="mb-0">© 2025 Smile Center - Todos los derechos reservados</p>
 </footer>
 
 </body>
