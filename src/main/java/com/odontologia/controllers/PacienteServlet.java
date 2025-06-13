@@ -20,6 +20,7 @@ public class PacienteServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        // Obtener conexión desde contexto de la app (asegúrate que exista)
         Connection conn = (Connection) getServletContext().getAttribute("conexion");
         this.pacienteService = new PacienteServiceJdbcImplement(conn);
     }
@@ -29,9 +30,10 @@ public class PacienteServlet extends HttpServlet {
         String accion = req.getParameter("accion");
 
         if (accion == null || accion.isEmpty()) {
+            // Listar todos los pacientes
             List<Paciente> pacientes = pacienteService.listarTodos();
             req.setAttribute("pacientes", pacientes);
-            req.getRequestDispatcher("/paciente/listado.jsp").forward(req, resp);
+            req.getRequestDispatcher("/verPacientes.jsp").forward(req, resp);
             return;
         }
 
@@ -74,6 +76,7 @@ public class PacienteServlet extends HttpServlet {
         String apellido = req.getParameter("apellido");
         String email = req.getParameter("email");
         String telefono = req.getParameter("telefono");
+        String direccion = req.getParameter("direccion");
         String fechaNacStr = req.getParameter("fechaNacimiento");
         String sexo = req.getParameter("sexo");
 
@@ -82,6 +85,7 @@ public class PacienteServlet extends HttpServlet {
         paciente.setApellido(apellido);
         paciente.setEmail(email);
         paciente.setTelefono(telefono);
+        paciente.setDireccion(direccion);
         paciente.setSexo(sexo != null && !sexo.isEmpty() ? sexo.charAt(0) : ' ');
 
         try {

@@ -27,13 +27,8 @@ public class CitaServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try (Connection conn = Conexion.getConnection()) {
-            // Crear instancias normales de los repositorios
-            PacienteRepository pacienteRepository = new PacienteRepository(conn) {
-                @Override
-                public List<Paciente> obtenerTodos() {
-                    return List.of();
-                }
-            };
+            // Crear instancias de los repositorios
+            PacienteRepository pacienteRepository = new PacienteRepository(conn);
             DoctorRepository doctorRepo = new DoctorRepository(conn);
 
             // Obtener listas desde la base de datos

@@ -75,26 +75,9 @@
                         <i class="fas fa-tachometer-alt me-2 text-primary"></i>Panel de Gestión Rápida
                     </h5>
                     <div class="row g-3">
+
                         <div class="col-md-3">
-                            <a href="cita" class="card admin-card text-decoration-none">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-calendar-plus fa-3x text-success mb-3"></i>
-                                    <h6>Nueva Cita</h6>
-                                    <p class="small text-muted">Agendar cita médica</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="paciente?accion=nuevo" class="card admin-card text-decoration-none">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-user-plus fa-3x text-info mb-3"></i>
-                                    <h6>Nuevo Paciente</h6>
-                                    <p class="small text-muted">Registrar paciente</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="paciente" class="card admin-card text-decoration-none">
+                            <a href="verPacientes.jsp" class="card admin-card text-decoration-none">
                                 <div class="card-body text-center">
                                     <i class="fas fa-users fa-3x text-warning mb-3"></i>
                                     <h6>Ver Pacientes</h6>
