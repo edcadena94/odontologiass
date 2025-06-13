@@ -6,101 +6,107 @@ import com.odontologia.services.PacienteServiceJdbcImplement;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet("/pacientes")
 public class PacienteServlet extends HttpServlet {
+
     private PacienteService pacienteService;
 
     @Override
     public void init() throws ServletException {
-        pacienteService = new PacienteService(new PacienteServiceJdbcImplement());
+        Connection conn = (Connection) getServletContext().getAttribute("conexion");
+        this.pacienteService = new PacienteServiceJdbcImplement(conn);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String accion = request.getParameter("accion");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String accion = req.getParameter("accion");
 
-        if("crear".equals(accion)) {
-            // Validar campos obligatorios
-            if (request.getParameter("nombre") == null || request.getParameter("nombre").trim().isEmpty() ||
-                    request.getParameter("apellido") == null || request.getParameter("apellido").trim().isEmpty() ||
-                    request.getParameter("fecha_nacimiento") == null || request.getParameter("fecha_nacimiento").trim().isEmpty() ||
-                    request.getParameter("sexo") == null || request.getParameter("sexo").trim().isEmpty() ||
-                    request.getParameter("direccion") == null || request.getParameter("direccion").trim().isEmpty() ||
-                    request.getParameter("telefono") == null || request.getParameter("telefono").trim().isEmpty() ||
-                    request.getParameter("email") == null || request.getParameter("email").trim().isEmpty()) {
+        if (accion == null || accion.isEmpty()) {
+            List<Paciente> pacientes = pacienteService.listarTodos();
+            req.setAttribute("pacientes", pacientes);
+            req.getRequestDispatcher("/paciente/listado.jsp").forward(req, resp);
+            return;
+        }
 
-                response.sendRedirect("registrarPaciente.jsp?error=campos_vacios");
-                return;
-            }
-
-            // Validar formato de teléfono
-            String telefono = request.getParameter("telefono");
-            if (!telefono.matches("^[\\d\\s+-]{8,15}$")) {
-                response.sendRedirect("registrarPaciente.jsp?error=telefono_invalido");
-                return;
-            }
-
-            // Validar formato de email
-            String email = request.getParameter("email");
-            if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
-                response.sendRedirect("registrarPaciente.jsp?error=email_invalido");
-                return;
-            }
-
-            Paciente paciente = new Paciente();
-            paciente.setNombre(request.getParameter("nombre"));
-            paciente.setApellido(request.getParameter("apellido"));
-
-            try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                paciente.setFechaNacimiento(dateFormat.parse(request.getParameter("fecha_nacimiento")));
-            } catch (Exception e) {
-                response.sendRedirect("registrarPaciente.jsp?error=fecha_invalida");
-                return;
-            }
-
-            paciente.setSexo(request.getParameter("sexo").charAt(0));
-            paciente.setDireccion(request.getParameter("direccion"));
-            paciente.setTelefono(telefono);
-            paciente.setEmail(email);
-
-            try {
-                // Verificar si el email ya existe
-                if (pacienteService.existeEmail(email)) {
-                    response.sendRedirect("registrarPaciente.jsp?error=email_existe");
-                    return;
-                }
-
-                // Guardar el paciente
-                pacienteService.registrarPaciente(paciente);
-                response.sendRedirect("registrarPaciente.jsp?status=guardado_exitoso");
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.sendRedirect("registrarPaciente.jsp?error=no_guardado");
-            }
+        switch (accion) {
+            case "editar":
+                editarPaciente(req, resp);
+                break;
+            case "eliminar":
+                eliminarPaciente(req, resp);
+                break;
+            default:
+                resp.sendRedirect("pacientes");
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String accion = request.getParameter("accion");
-
-        if(accion == null) {
-            // Listar pacientes por defecto
-            List<Paciente> pacientes = pacienteService.listarPacientes();
-            request.setAttribute("pacientes", pacientes);
-            request.getRequestDispatcher("verPacientes.jsp").forward(request, response);
-        } else if("nuevo".equals(accion)) {
-            // Redirigir al formulario de registro
-            response.sendRedirect("registrarPaciente.jsp");
+    private void editarPaciente(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            Paciente paciente = pacienteService.buscarPorId(id);
+            req.setAttribute("paciente", paciente);
+            req.getRequestDispatcher("/paciente/formulario.jsp").forward(req, resp);
+        } catch (NumberFormatException e) {
+            resp.sendRedirect("pacientes");
         }
+    }
+
+    private void eliminarPaciente(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            pacienteService.eliminar(id);
+        } catch (NumberFormatException ignored) {
+        }
+        resp.sendRedirect("pacientes");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idParam = req.getParameter("id");
+        String nombre = req.getParameter("nombre");
+        String apellido = req.getParameter("apellido");
+        String email = req.getParameter("email");
+        String telefono = req.getParameter("telefono");
+        String fechaNacStr = req.getParameter("fechaNacimiento");
+        String sexo = req.getParameter("sexo");
+
+        Paciente paciente = new Paciente();
+        paciente.setNombre(nombre);
+        paciente.setApellido(apellido);
+        paciente.setEmail(email);
+        paciente.setTelefono(telefono);
+        paciente.setSexo(sexo != null && !sexo.isEmpty() ? sexo.charAt(0) : ' ');
+
+        try {
+            Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacStr);
+            paciente.setFechaNacimiento(fechaNacimiento);
+        } catch (Exception e) {
+            req.setAttribute("error", "Fecha de nacimiento inválida");
+            req.getRequestDispatcher("/paciente/formulario.jsp").forward(req, resp);
+            return;
+        }
+
+        if (idParam != null && !idParam.isEmpty()) {
+            try {
+                int id = Integer.parseInt(idParam);
+                paciente.setIdPaciente(id);
+                pacienteService.actualizar(paciente);
+            } catch (NumberFormatException e) {
+                req.setAttribute("error", "ID inválido");
+                req.getRequestDispatcher("/paciente/formulario.jsp").forward(req, resp);
+                return;
+            }
+        } else {
+            pacienteService.guardar(paciente);
+        }
+
+        resp.sendRedirect("pacientes");
     }
 }

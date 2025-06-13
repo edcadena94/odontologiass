@@ -3,21 +3,40 @@ package com.odontologia.models;
 import java.util.Date;
 
 public class Paciente {
-    private int idPaciente;
+
+    private Integer idPaciente; // ✅ Debe ser Integer, no int
     private String nombre;
     private String apellido;
     private Date fechaNacimiento;
     private char sexo;
-    private String direccion;
     private String telefono;
     private String email;
+    private String direccion;
+
+    // Constructor vacío
+    public Paciente() {
+    }
+
+    // Constructor con todos los campos (opcional)
+    public Paciente(Integer idPaciente, String nombre, String apellido, Date fechaNacimiento,
+                    char sexo, String telefono, String email, String direccion) {
+        this.idPaciente = idPaciente;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.sexo = sexo;
+        this.telefono = telefono;
+        this.email = email;
+        this.direccion = direccion;
+    }
 
     // Getters y Setters
-    public int getIdPaciente() {
+
+    public Integer getIdPaciente() {
         return idPaciente;
     }
 
-    public void setIdPaciente(int idPaciente) {
+    public void setIdPaciente(Integer idPaciente) {
         this.idPaciente = idPaciente;
     }
 
@@ -53,14 +72,6 @@ public class Paciente {
         this.sexo = sexo;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
     public String getTelefono() {
         return telefono;
     }
@@ -75,5 +86,13 @@ public class Paciente {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 }

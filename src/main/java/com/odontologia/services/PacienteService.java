@@ -1,26 +1,24 @@
 package com.odontologia.services;
 
 import com.odontologia.models.Paciente;
-import com.odontologia.repositories.PacienteRepository;
 
+import java.util.Date;
 import java.util.List;
 
-public class PacienteService {
-    private PacienteRepository repository;
+public interface PacienteService {
+    // CRUD básico
+    boolean guardar(Paciente paciente);
+    boolean actualizar(Paciente paciente);
+    boolean eliminar(int idPaciente);
 
-    public PacienteService(PacienteRepository repository) {
-        this.repository = repository;
-    }
+    // Consultas
+    Paciente buscarPorId(int idPaciente);
+    List<Paciente> listarTodos();
+    List<Paciente> buscarPorNombre(String nombre);
+    List<Paciente> buscarPorFechaNacimiento(Date fechaNacimiento);
+    List<Paciente> buscarPorSexo(char sexo);
 
-    public void registrarPaciente(Paciente paciente) {
-        repository.save(paciente);
-    }
-
-    public List<Paciente> listarPacientes() {
-        return repository.findAll();
-    }
-
-    public boolean existeEmail(String email) {
-        return false;
-    }
+    // Métodos adicionales
+    boolean existeEmail(String email);
+    int contarPacientes();
 }

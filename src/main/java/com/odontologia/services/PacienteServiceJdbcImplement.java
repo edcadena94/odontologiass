@@ -2,61 +2,114 @@ package com.odontologia.services;
 
 import com.odontologia.models.Paciente;
 import com.odontologia.repositories.PacienteRepository;
-import com.odontologia.util.Conexion;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class PacienteServiceJdbcImplement implements PacienteRepository {
-    @Override
-    public void save(Paciente paciente) {
-        String sql = "INSERT INTO Pacientes (nombre, apellido, fecha_nacimiento, sexo, direccion, telefono, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = Conexion.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, paciente.getNombre());
-            statement.setString(2, paciente.getApellido());
-            statement.setDate(3, new java.sql.Date(paciente.getFechaNacimiento().getTime()));
-            statement.setString(4, String.valueOf(paciente.getSexo()));
-            statement.setString(5, paciente.getDireccion());
-            statement.setString(6, paciente.getTelefono());
-            statement.setString(7, paciente.getEmail());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+public class PacienteServiceJdbcImplement implements PacienteService {
+
+    private final PacienteRepository pacienteRepository;
+
+    public PacienteServiceJdbcImplement(Connection conn) {
+        this.pacienteRepository = new PacienteRepository(conn);
     }
 
     @Override
-    public List<Paciente> findAll() {
-        List<Paciente> pacientes = new ArrayList<>();
-        String sql = "SELECT * FROM Pacientes";
-        try (Connection connection = Conexion.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                Paciente paciente = new Paciente();
-                paciente.setIdPaciente(resultSet.getInt("id_paciente"));
-                paciente.setNombre(resultSet.getString("nombre"));
-                paciente.setApellido(resultSet.getString("apellido"));
-                paciente.setFechaNacimiento(resultSet.getDate("fecha_nacimiento"));
-                paciente.setSexo(resultSet.getString("sexo").charAt(0));
-                paciente.setDireccion(resultSet.getString("direccion"));
-                paciente.setTelefono(resultSet.getString("telefono"));
-                paciente.setEmail(resultSet.getString("email"));
-                pacientes.add(paciente);
+    public boolean guardar(Paciente paciente) {
+        if (paciente == null || paciente.getNombre() == null || paciente.getNombre().trim().isEmpty()) {
+            return false;
+        }
+        if (paciente.getApellido() == null || paciente.getApellido().trim().isEmpty()) {
+            return false;
+        }
+        if (paciente.getFechaNacimiento() == null) {
+            return false;
+        }
+
+        if (paciente.getEmail() != null && !paciente.getEmail().trim().isEmpty()) {
+            if (existeEmail(paciente.getEmail())) {
+                return false;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return pacientes;
+
+        return pacienteRepository.guardar(paciente);
     }
 
     @Override
-    public List<Paciente> obtenerTodos() {
-        return List.of();
+    public boolean actualizar(Paciente paciente) {
+        if (paciente == null || paciente.getIdPaciente() == null || paciente.getIdPaciente() <= 0) {
+            return false;
+        }
+
+        if (paciente.getNombre() == null || paciente.getNombre().trim().isEmpty()) {
+            return false;
+        }
+        if (paciente.getApellido() == null || paciente.getApellido().trim().isEmpty()) {
+            return false;
+        }
+        if (paciente.getFechaNacimiento() == null) {
+            return false;
+        }
+
+        return pacienteRepository.actualizar(paciente);
+    }
+
+    @Override
+    public boolean eliminar(int idPaciente) {
+        if (idPaciente <= 0) {
+            return false;
+        }
+        return pacienteRepository.eliminar(idPaciente);
+    }
+
+    @Override
+    public Paciente buscarPorId(int idPaciente) {
+        if (idPaciente <= 0) {
+            return null;
+        }
+        return pacienteRepository.buscarPorId(idPaciente);
+    }
+
+    @Override
+    public List<Paciente> listarTodos() {
+        return pacienteRepository.obtenerTodos();
+    }
+
+    @Override
+    public List<Paciente> buscarPorNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return List.of();
+        }
+        return pacienteRepository.buscarPorNombre(nombre.trim());
+    }
+
+    @Override
+    public List<Paciente> buscarPorFechaNacimiento(Date fechaNacimiento) {
+        if (fechaNacimiento == null) {
+            return List.of();
+        }
+        return pacienteRepository.buscarPorFechaNacimiento(fechaNacimiento);
+    }
+
+    @Override
+    public List<Paciente> buscarPorSexo(char sexo) {
+        if (sexo != 'M' && sexo != 'F') {
+            return List.of();
+        }
+        return pacienteRepository.buscarPorSexo(sexo);
+    }
+
+    @Override
+    public boolean existeEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        return pacienteRepository.existeEmail(email.trim());
+    }
+
+    @Override
+    public int contarPacientes() {
+        return pacienteRepository.contar();
     }
 }

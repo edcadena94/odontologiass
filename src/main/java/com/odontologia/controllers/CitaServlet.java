@@ -27,18 +27,8 @@ public class CitaServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try (Connection conn = Conexion.getConnection()) {
-            // Cargar datos para el formulario
-            PacienteRepository pacienteRepo = new PacienteRepository() {
-                @Override
-                public void save(Paciente paciente) {
-
-                }
-
-                @Override
-                public List<Paciente> findAll() {
-                    return List.of();
-                }
-
+            // Crear instancias normales de los repositorios
+            PacienteRepository pacienteRepository = new PacienteRepository(conn) {
                 @Override
                 public List<Paciente> obtenerTodos() {
                     return List.of();
@@ -46,11 +36,15 @@ public class CitaServlet extends HttpServlet {
             };
             DoctorRepository doctorRepo = new DoctorRepository(conn);
 
-            List<Paciente> listaPacientes = pacienteRepo.obtenerTodos();
+            // Obtener listas desde la base de datos
+            List<Paciente> listaPacientes = pacienteRepository.obtenerTodos();
             List<Doctor> listaDoctores = doctorRepo.obtenerTodos();
 
+            // Enviar atributos para que el JSP los use
             request.setAttribute("listaPacientes", listaPacientes);
             request.setAttribute("listaDoctores", listaDoctores);
+
+            // Redirigir al JSP de agendar cita
             request.getRequestDispatcher("/agendar-cita.jsp").forward(request, response);
 
         } catch (Exception e) {
@@ -80,7 +74,7 @@ public class CitaServlet extends HttpServlet {
             cita.setHora(hora);
             cita.setMotivo(motivo);
 
-            // Usar TU servicio CitaServiceJdbcImplement
+            // Usar el servicio para guardar la cita
             CitaService citaService = new CitaServiceJdbcImplement(conn);
             boolean guardado = citaService.agendarCita(cita);
 

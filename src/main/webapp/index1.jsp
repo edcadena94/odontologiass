@@ -53,7 +53,13 @@
                         <li><a class="dropdown-item" href="login.jsp"><i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="btn btn-modern ms-3" href="cita">Cerrar Sesioon</a></li>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="btn btn-danger ms-3" href="index.jsp">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
             </ul>
         </div>
     </div>

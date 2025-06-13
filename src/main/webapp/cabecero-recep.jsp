@@ -39,7 +39,7 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="btn btn-danger ms-3" href="login.jsp">Cerrar Sesión</a>
+                    <a class="btn btn-danger ms-3" href="index.jsp">Cerrar Sesión</a>
                 </li>
             </ul>
         </div>
@@ -66,7 +66,7 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="paciente?accion=nuevo" class="card admin-card text-decoration-none">
+                            <a href="registrarPaciente.jsp" class="card admin-card text-decoration-none">
                                 <div class="card-body text-center">
                                     <i class="fas fa-user-plus fa-3x text-info mb-3"></i>
                                     <h6 class="card-title">Nuevo Paciente</h6>
