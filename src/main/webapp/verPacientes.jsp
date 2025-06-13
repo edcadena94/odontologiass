@@ -1,68 +1,152 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<html lang="es">
+<%@ page import="java.util.List" %>
+<%@ page import="com.odontologia.models.Paciente" %>
+<!DOCTYPE html>
+<html>
 <head>
+    <title>Lista de Pacientes - Clínica Dental</title>
     <meta charset="UTF-8">
-    <title>Pacientes Registrados</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/crud.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="text-center">Pacientes Registrados</h1>
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-user-injured text-primary me-2"></i>Gestión de Pacientes</h2>
+        <a href="paciente?accion=nuevo" class="btn btn-success">
+            <i class="fas fa-plus me-2"></i>Nuevo Paciente
+        </a>
+    </div>
 
-    <c:if test="${empty pacientes}">
-        <p class="alert alert-info text-center">No hay pacientes registrados.</p>
-    </c:if>
+    <!-- Mensajes -->
+    <% if ("true".equals(request.getParameter("success"))) { %>
+    <div class="alert alert-success">¡Paciente creado exitosamente!</div>
+    <% } else if ("true".equals(request.getParameter("updated"))) { %>
+    <div class="alert alert-info">¡Paciente actualizado exitosamente!</div>
+    <% } else if ("true".equals(request.getParameter("deleted"))) { %>
+    <div class="alert alert-warning">¡Paciente eliminado exitosamente!</div>
+    <% } else if ("true".equals(request.getParameter("error"))) { %>
+    <div class="alert alert-danger">Error en la operación. Intente nuevamente.</div>
+    <% } %>
 
-    <c:if test="${not empty pacientes}">
-        <table class="table table-striped table-bordered mt-4">
-            <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Sexo</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Email</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="paciente" items="${pacientes}">
-                <tr>
-                    <td>${paciente.idPaciente}</td>
-                    <td>${paciente.nombre}</td>
-                    <td>${paciente.apellido}</td>
-                    <td>
-                        <c:out value="${paciente.fechaNacimiento}" />
-                        <!-- Si quieres formato yyyy-MM-dd, podríamos hacer algo en el Servlet -->
-                    </td>
-                    <td>${paciente.sexo}</td>
-                    <td>${paciente.direccion}</td>
-                    <td>${paciente.telefono}</td>
-                    <td>${paciente.email}</td>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/pacientes?accion=editar&id=${paciente.idPaciente}" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="${pageContext.request.contextPath}/pacientes?accion=eliminar&id=${paciente.idPaciente}"
-                           class="btn btn-sm btn-danger"
-                           onclick="return confirm('¿Está seguro de eliminar este paciente?');">Eliminar</a>
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </c:if>
+    <!-- Buscar -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form action="paciente" method="get" class="row g-3">
+                <input type="hidden" name="accion" value="buscar">
+                <div class="col-md-9">
+                    <input type="text" name="nombre" class="form-control"
+                           placeholder="Buscar por nombre o apellido..."
+                           value="<%= request.getParameter("nombre") != null ? request.getParameter("nombre") : "" %>">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-search me-2"></i>Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <div class="text-center mt-4">
-        <a href="${pageContext.request.contextPath}/registrarPaciente.jsp" class="btn btn-primary">Registrar Nuevo Paciente</a>
+    <!-- Tabla -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre Completo</th>
+                        <th>Sexo</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%
+                        List<Paciente> listaPacientes = (List<Paciente>) request.getAttribute("listaPacientes");
+                        if (listaPacientes != null && !listaPacientes.isEmpty()) {
+                            for (Paciente paciente : listaPacientes) {
+                                String sexoStr = paciente.getSexo() == 'M' || paciente.getSexo() == 'm' ? "Masculino" :
+                                        paciente.getSexo() == 'F' || paciente.getSexo() == 'f' ? "Femenino" : "No especificado";
+                    %>
+                    <tr>
+                        <td><%= paciente.getIdPaciente() %></td>
+                        <td><strong><%= paciente.getNombre() %> <%= paciente.getApellido() %></strong></td>
+                        <td><span class="badge bg-info"><%= sexoStr %></span></td>
+                        <td><%= paciente.getTelefono() != null ? paciente.getTelefono() : "-" %></td>
+                        <td><%= paciente.getEmail() != null ? paciente.getEmail() : "-" %></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="paciente?accion=ver&id=<%= paciente.getIdPaciente() %>"
+                                   class="btn btn-outline-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="paciente?accion=editar&id=<%= paciente.getIdPaciente() %>"
+                                   class="btn btn-outline-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="confirmarEliminar(<%= paciente.getIdPaciente() %>)"
+                                        class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <%
+                        }
+                    } else {
+                    %>
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <i class="fas fa-info-circle me-2"></i>No hay pacientes registrados
+                        </td>
+                    </tr>
+                    <%
+                        }
+                    %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <div class="mt-4 text-center">
+        <a href="panelPaciente.jsp" class="btn btn-secondary">
+            <i class="fas fa-home me-2"></i>Volver al Inicio
+        </a>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function confirmarEliminar(id) {
+        if (confirm('¿Está seguro de eliminar este paciente?')) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'paciente';
+
+            const inputAccion = document.createElement('input');
+            inputAccion.type = 'hidden';
+            inputAccion.name = 'accion';
+            inputAccion.value = 'eliminar';
+
+            const inputId = document.createElement('input');
+            inputId.type = 'hidden';
+            inputId.name = 'id';
+            inputId.value = id;
+
+            form.appendChild(inputAccion);
+            form.appendChild(inputId);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
 </body>
 </html>
