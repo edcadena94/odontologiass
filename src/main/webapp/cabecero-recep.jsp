@@ -66,7 +66,7 @@
                             </a>
                         </div>
                         <div class="col-md-6">
-                            <a href="paciente?accion=nuevo" class="card admin-card text-decoration-none">
+                            <a href="registrarPaciente.jsp" class="card admin-card text-decoration-none">
                                 <div class="card-body text-center">
                                     <i class="fas fa-user-plus fa-3x text-info mb-3"></i>
                                     <h6 class="card-title">Nuevo Paciente</h6>
@@ -75,6 +75,7 @@
                             </a>
                         </div>
                     </div>
+
 
                 </div>
             </div>

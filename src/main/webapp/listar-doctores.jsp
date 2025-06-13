@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.odontologia.models.Doctor" %>
+<%@ page import="com.odontologia.models.Paciente" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lista de Doctores - Clínica Dental</title>
+  <title>Lista de Pacientes - Clínica Dental</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,19 +15,19 @@
 <div class="container mt-4">
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="fas fa-user-md text-primary me-2"></i>Gestión de Doctores</h2>
-    <a href="doctor?accion=nuevo" class="btn btn-success">
-      <i class="fas fa-plus me-2"></i>Nuevo Doctor
+    <h2><i class="fas fa-user-injured text-primary me-2"></i>Gestión de Pacientes</h2>
+    <a href="paciente?accion=nuevo" class="btn btn-success">
+      <i class="fas fa-plus me-2"></i>Nuevo Paciente
     </a>
   </div>
 
   <!-- Mensajes -->
   <% if ("true".equals(request.getParameter("success"))) { %>
-  <div class="alert alert-success">¡Doctor creado exitosamente!</div>
+  <div class="alert alert-success">¡Paciente creado exitosamente!</div>
   <% } else if ("true".equals(request.getParameter("updated"))) { %>
-  <div class="alert alert-info">¡Doctor actualizado exitosamente!</div>
+  <div class="alert alert-info">¡Paciente actualizado exitosamente!</div>
   <% } else if ("true".equals(request.getParameter("deleted"))) { %>
-  <div class="alert alert-warning">¡Doctor eliminado exitosamente!</div>
+  <div class="alert alert-warning">¡Paciente eliminado exitosamente!</div>
   <% } else if ("true".equals(request.getParameter("error"))) { %>
   <div class="alert alert-danger">Error en la operación. Intente nuevamente.</div>
   <% } %>
@@ -35,7 +35,7 @@
   <!-- Buscar -->
   <div class="card mb-4">
     <div class="card-body">
-      <form action="doctor" method="get" class="row g-3">
+      <form action="paciente" method="get" class="row g-3">
         <input type="hidden" name="accion" value="buscar">
         <div class="col-md-9">
           <input type="text" name="nombre" class="form-control"
@@ -60,7 +60,9 @@
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Especialidad</th>
+            <th>Apellido</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Sexo</th>
             <th>Teléfono</th>
             <th>Email</th>
             <th>Acciones</th>
@@ -68,31 +70,29 @@
           </thead>
           <tbody>
           <%
-            List<Doctor> listaDoctores = (List<Doctor>) request.getAttribute("listaDoctores");
-            if (listaDoctores != null && !listaDoctores.isEmpty()) {
-              for (Doctor doctor : listaDoctores) {
+            List<Paciente> listaPacientes = (List<Paciente>) request.getAttribute("listaPacientes");
+            if (listaPacientes != null && !listaPacientes.isEmpty()) {
+              for (Paciente paciente : listaPacientes) {
           %>
           <tr>
-            <td><%= doctor.getIdDoctor() %></td>
-            <td>
-              <strong><%= doctor.getNombreConTitulo() %></strong>
-            </td>
-            <td>
-              <span class="badge bg-info"><%= doctor.getEspecialidad() %></span>
-            </td>
-            <td><%= doctor.getTelefono() != null ? doctor.getTelefono() : "-" %></td>
-            <td><%= doctor.getEmail() != null ? doctor.getEmail() : "-" %></td>
+            <td><%= paciente.getIdPaciente() %></td>
+            <td><%= paciente.getNombre() %></td>
+            <td><%= paciente.getApellido() %></td>
+            <td><%= paciente.getFechaNacimiento() != null ? paciente.getFechaNacimiento() : "-" %></td>
+            <td><%= paciente.getSexo() != null ? paciente.getSexo() : "-" %></td>
+            <td><%= paciente.getTelefono() != null ? paciente.getTelefono() : "-" %></td>
+            <td><%= paciente.getEmail() != null ? paciente.getEmail() : "-" %></td>
             <td>
               <div class="btn-group" role="group">
-                <a href="doctor?accion=ver&id=<%= doctor.getIdDoctor() %>"
+                <a href="paciente?accion=ver&id=<%= paciente.getIdPaciente() %>"
                    class="btn btn-outline-info btn-sm">
                   <i class="fas fa-eye"></i>
                 </a>
-                <a href="doctor?accion=editar&id=<%= doctor.getIdDoctor() %>"
+                <a href="paciente?accion=editar&id=<%= paciente.getIdPaciente() %>"
                    class="btn btn-outline-warning btn-sm">
                   <i class="fas fa-edit"></i>
                 </a>
-                <button onclick="confirmarEliminar(<%= doctor.getIdDoctor() %>)"
+                <button onclick="confirmarEliminar(<%= paciente.getIdPaciente() %>)"
                         class="btn btn-outline-danger btn-sm">
                   <i class="fas fa-trash"></i>
                 </button>
@@ -104,8 +104,8 @@
           } else {
           %>
           <tr>
-            <td colspan="6" class="text-center">
-              <i class="fas fa-info-circle me-2"></i>No hay doctores registrados
+            <td colspan="8" class="text-center">
+              <i class="fas fa-info-circle me-2"></i>No hay pacientes registrados
             </td>
           </tr>
           <%
@@ -119,7 +119,7 @@
 
   <!-- Navegación -->
   <div class="mt-4 text-center">
-    <a href="index1.jsp" class="btn btn-secondary">
+    <a href="index.jsp" class="btn btn-secondary">
       <i class="fas fa-home me-2"></i>Volver al Inicio
     </a>
   </div>
@@ -128,10 +128,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function confirmarEliminar(id) {
-    if (confirm('¿Está seguro de eliminar este doctor?')) {
+    if (confirm('¿Está seguro de eliminar este paciente?')) {
       const form = document.createElement('form');
       form.method = 'POST';
-      form.action = 'doctor';
+      form.action = 'paciente';
 
       const inputAccion = document.createElement('input');
       inputAccion.type = 'hidden';

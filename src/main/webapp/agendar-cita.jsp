@@ -34,7 +34,9 @@
             <div class="card shadow">
                 <div class="card-header text-center">
                     <h3><i class="fas fa-calendar-plus me-2"></i>Agendar Nueva Cita</h3>
+
                 </div>
+
                 <div class="card-body p-4">
 
                     <!-- Mensajes de estado -->
@@ -158,6 +160,11 @@
                             <a href="index.jsp" class="btn btn-outline-secondary btn-lg">
                                 <i class="fas fa-times me-2"></i>Cancelar
                             </a>
+                            <div class="mt-4 text-center">
+                                <a href="cabecero-recep.jsp" class="btn btn-secondary">
+                                    <i class="fas fa-home me-2"></i>Volver al Inicio
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>

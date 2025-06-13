@@ -15,9 +15,9 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @WebServlet("/cita")
 public class CitaServlet extends HttpServlet {
@@ -28,7 +28,22 @@ public class CitaServlet extends HttpServlet {
 
         try (Connection conn = Conexion.getConnection()) {
             // Cargar datos para el formulario
-            PacienteRepository pacienteRepo = new PacienteRepository(conn);
+            PacienteRepository pacienteRepo = new PacienteRepository() {
+                @Override
+                public void save(Paciente paciente) {
+
+                }
+
+                @Override
+                public List<Paciente> findAll() {
+                    return List.of();
+                }
+
+                @Override
+                public List<Paciente> obtenerTodos() {
+                    return List.of();
+                }
+            };
             DoctorRepository doctorRepo = new DoctorRepository(conn);
 
             List<Paciente> listaPacientes = pacienteRepo.obtenerTodos();
@@ -36,12 +51,12 @@ public class CitaServlet extends HttpServlet {
 
             request.setAttribute("listaPacientes", listaPacientes);
             request.setAttribute("listaDoctores", listaDoctores);
-
             request.getRequestDispatcher("/agendar-cita.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp");
+            request.setAttribute("errorMessage", "Error al cargar los datos: " + e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

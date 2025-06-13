@@ -27,11 +27,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    <!-- Floating WhatsApp CSS -->
-    <link rel="stylesheet" href="https://rawcdn.githack.com/jerfeson/floating-whatsapp/0310b4cd88e9e55dc637d1466670da26b645ae49/floating-wpp.min.css" />
-
-    <!-- Floating WhatsApp JS -->
-    <script type="text/javascript" src="https://rawcdn.githack.com/jerfeson/floating-whatsapp/0310b4cd88e9e55dc637d1466670da26b645ae49/floating-wpp.min.js" defer></script>
 </head>
 
 <body>
@@ -145,8 +140,12 @@
                 <p class="small">Lun-Vie: 8:00-18:00<br>Sáb: 9:00-14:00</p>
             </div>
         </div>
-        <hr class="my-3">
-        <p class="mb-0">© 2025 Smile Center - Todos los derechos reservados</p>
+        <!-- Footer -->
+        <footer class="text-center">
+            <div class="container">
+                <p class="mb-1">© 2025 Smile Center - Todos los derechos reservados</p>
+            </div>
+        </footer>
     </div>
 </footer>
 

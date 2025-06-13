@@ -3,181 +3,104 @@ package com.odontologia.controllers;
 import com.odontologia.models.Paciente;
 import com.odontologia.services.PacienteService;
 import com.odontologia.services.PacienteServiceJdbcImplement;
-import com.odontologia.util.Conexion;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
-@WebServlet("/paciente")
+@WebServlet("/pacientes")
 public class PacienteServlet extends HttpServlet {
+    private PacienteService pacienteService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void init() throws ServletException {
+        pacienteService = new PacienteService(new PacienteServiceJdbcImplement());
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
 
-        try (Connection conn = Conexion.getConnection()) {
-            PacienteService pacienteService = new PacienteServiceJdbcImplement(conn);
+        if("crear".equals(accion)) {
+            // Validar campos obligatorios
+            if (request.getParameter("nombre") == null || request.getParameter("nombre").trim().isEmpty() ||
+                    request.getParameter("apellido") == null || request.getParameter("apellido").trim().isEmpty() ||
+                    request.getParameter("fecha_nacimiento") == null || request.getParameter("fecha_nacimiento").trim().isEmpty() ||
+                    request.getParameter("sexo") == null || request.getParameter("sexo").trim().isEmpty() ||
+                    request.getParameter("direccion") == null || request.getParameter("direccion").trim().isEmpty() ||
+                    request.getParameter("telefono") == null || request.getParameter("telefono").trim().isEmpty() ||
+                    request.getParameter("email") == null || request.getParameter("email").trim().isEmpty()) {
 
-            if ("listar".equals(accion) || accion == null) {
-                // Listar todos los pacientes
-                List<Paciente> listaPacientes = pacienteService.listarTodos();
-                request.setAttribute("listaPacientes", listaPacientes);
-                request.getRequestDispatcher("/listar-pacientes.jsp").forward(request, response);
-
-            } else if ("nuevo".equals(accion)) {
-                // Mostrar formulario para nuevo paciente
-                request.getRequestDispatcher("/nuevo-paciente.jsp").forward(request, response);
-
-            } else if ("editar".equals(accion)) {
-                // Mostrar formulario para editar paciente
-                int id = Integer.parseInt(request.getParameter("id"));
-                Paciente paciente = pacienteService.buscarPorId(id);
-                if (paciente != null) {
-                    request.setAttribute("paciente", paciente);
-                    request.getRequestDispatcher("/editar-paciente.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect("paciente?error=not_found");
-                }
-
-            } else if ("ver".equals(accion)) {
-                // Ver detalles del paciente
-                int id = Integer.parseInt(request.getParameter("id"));
-                Paciente paciente = pacienteService.buscarPorId(id);
-                if (paciente != null) {
-                    request.setAttribute("paciente", paciente);
-                    request.getRequestDispatcher("/ver-paciente.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect("paciente?error=not_found");
-                }
-
-            } else if ("buscar".equals(accion)) {
-                // Buscar pacientes por nombre
-                String nombre = request.getParameter("nombre");
-                List<Paciente> listaPacientes = pacienteService.buscarPorNombre(nombre);
-                request.setAttribute("listaPacientes", listaPacientes);
-                request.setAttribute("termino", nombre);
-                request.getRequestDispatcher("/listar-pacientes.jsp").forward(request, response);
+                response.sendRedirect("registrarPaciente.jsp?error=campos_vacios");
+                return;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("error.jsp");
+            // Validar formato de teléfono
+            String telefono = request.getParameter("telefono");
+            if (!telefono.matches("^[\\d\\s+-]{8,15}$")) {
+                response.sendRedirect("registrarPaciente.jsp?error=telefono_invalido");
+                return;
+            }
+
+            // Validar formato de email
+            String email = request.getParameter("email");
+            if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+                response.sendRedirect("registrarPaciente.jsp?error=email_invalido");
+                return;
+            }
+
+            Paciente paciente = new Paciente();
+            paciente.setNombre(request.getParameter("nombre"));
+            paciente.setApellido(request.getParameter("apellido"));
+
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                paciente.setFechaNacimiento(dateFormat.parse(request.getParameter("fecha_nacimiento")));
+            } catch (Exception e) {
+                response.sendRedirect("registrarPaciente.jsp?error=fecha_invalida");
+                return;
+            }
+
+            paciente.setSexo(request.getParameter("sexo").charAt(0));
+            paciente.setDireccion(request.getParameter("direccion"));
+            paciente.setTelefono(telefono);
+            paciente.setEmail(email);
+
+            try {
+                // Verificar si el email ya existe
+                if (pacienteService.existeEmail(email)) {
+                    response.sendRedirect("registrarPaciente.jsp?error=email_existe");
+                    return;
+                }
+
+                // Guardar el paciente
+                pacienteService.registrarPaciente(paciente);
+                response.sendRedirect("registrarPaciente.jsp?status=guardado_exitoso");
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendRedirect("registrarPaciente.jsp?error=no_guardado");
+            }
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
 
-        try (Connection conn = Conexion.getConnection()) {
-            PacienteService pacienteService = new PacienteServiceJdbcImplement(conn);
-
-            if ("crear".equals(accion)) {
-                // Crear nuevo paciente
-                String nombre = request.getParameter("nombre");
-                String apellido = request.getParameter("apellido");
-                String fechaNacimientoStr = request.getParameter("fechaNacimiento");
-                String telefono = request.getParameter("telefono");
-                String email = request.getParameter("email");
-                String direccion = request.getParameter("direccion");
-
-                // Validaciones básicas
-                if (nombre == null || nombre.trim().isEmpty() ||
-                        apellido == null || apellido.trim().isEmpty() ||
-                        fechaNacimientoStr == null || fechaNacimientoStr.trim().isEmpty()) {
-                    response.sendRedirect("paciente?accion=nuevo&error=campos_vacios");
-                    return;
-                }
-
-                // Verificar si el email ya existe
-                if (email != null && !email.trim().isEmpty() && pacienteService.existeEmail(email)) {
-                    response.sendRedirect("paciente?accion=nuevo&error=email_existe");
-                    return;
-                }
-
-                LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr);
-
-                Paciente paciente = new Paciente();
-                paciente.setNombre(nombre.trim());
-                paciente.setApellido(apellido.trim());
-                paciente.setFechaNacimiento(fechaNacimiento);
-                paciente.setTelefono(telefono != null ? telefono.trim() : "");
-                paciente.setEmail(email != null ? email.trim() : "");
-                paciente.setDireccion(direccion != null ? direccion.trim() : "");
-
-                boolean guardado = pacienteService.guardar(paciente);
-
-                if (guardado) {
-                    response.sendRedirect("paciente?success=created");
-                } else {
-                    response.sendRedirect("paciente?accion=nuevo&error=no_guardado");
-                }
-
-            } else if ("actualizar".equals(accion)) {
-                // Actualizar paciente existente
-                int id = Integer.parseInt(request.getParameter("id"));
-                String nombre = request.getParameter("nombre");
-                String apellido = request.getParameter("apellido");
-                String fechaNacimientoStr = request.getParameter("fechaNacimiento");
-                String telefono = request.getParameter("telefono");
-                String email = request.getParameter("email");
-                String direccion = request.getParameter("direccion");
-
-                // Validaciones básicas
-                if (nombre == null || nombre.trim().isEmpty() ||
-                        apellido == null || apellido.trim().isEmpty() ||
-                        fechaNacimientoStr == null || fechaNacimientoStr.trim().isEmpty()) {
-                    response.sendRedirect("paciente?accion=editar&id=" + id + "&error=campos_vacios");
-                    return;
-                }
-
-                LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr);
-
-                Paciente paciente = new Paciente();
-                paciente.setIdPaciente(id);
-                paciente.setNombre(nombre.trim());
-                paciente.setApellido(apellido.trim());
-                paciente.setFechaNacimiento(fechaNacimiento);
-                paciente.setTelefono(telefono != null ? telefono.trim() : "");
-                paciente.setEmail(email != null ? email.trim() : "");
-                paciente.setDireccion(direccion != null ? direccion.trim() : "");
-
-                boolean actualizado = pacienteService.actualizar(paciente);
-
-                if (actualizado) {
-                    response.sendRedirect("paciente?success=updated");
-                } else {
-                    response.sendRedirect("paciente?accion=editar&id=" + id + "&error=no_actualizado");
-                }
-
-            } else if ("eliminar".equals(accion)) {
-                // Eliminar paciente
-                int id = Integer.parseInt(request.getParameter("id"));
-                boolean eliminado = pacienteService.eliminar(id);
-
-                if (eliminado) {
-                    response.sendRedirect("paciente?success=deleted");
-                } else {
-                    response.sendRedirect("paciente?error=no_eliminado");
-                }
-            }
-
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendRedirect("paciente?error=datos_invalidos");
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("paciente?error=error_interno");
+        if(accion == null) {
+            // Listar pacientes por defecto
+            List<Paciente> pacientes = pacienteService.listarPacientes();
+            request.setAttribute("pacientes", pacientes);
+            request.getRequestDispatcher("verPacientes.jsp").forward(request, response);
+        } else if("nuevo".equals(accion)) {
+            // Redirigir al formulario de registro
+            response.sendRedirect("registrarPaciente.jsp");
         }
     }
 }
