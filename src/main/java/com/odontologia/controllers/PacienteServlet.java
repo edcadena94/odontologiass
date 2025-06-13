@@ -54,7 +54,7 @@ public class PacienteServlet extends HttpServlet {
             int id = Integer.parseInt(req.getParameter("id"));
             Paciente paciente = pacienteService.buscarPorId(id);
             req.setAttribute("paciente", paciente);
-            req.getRequestDispatcher("/paciente/formulario.jsp").forward(req, resp);
+            req.getRequestDispatcher("/verPacientes.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
             resp.sendRedirect("pacientes");
         }
@@ -93,7 +93,7 @@ public class PacienteServlet extends HttpServlet {
             paciente.setFechaNacimiento(fechaNacimiento);
         } catch (Exception e) {
             req.setAttribute("error", "Fecha de nacimiento inválida");
-            req.getRequestDispatcher("/paciente/formulario.jsp").forward(req, resp);
+            req.getRequestDispatcher("/verPacientes.jsp").forward(req, resp);
             return;
         }
 
@@ -104,7 +104,7 @@ public class PacienteServlet extends HttpServlet {
                 pacienteService.actualizar(paciente);
             } catch (NumberFormatException e) {
                 req.setAttribute("error", "ID inválido");
-                req.getRequestDispatcher("/paciente/formulario.jsp").forward(req, resp);
+                req.getRequestDispatcher("/verPacientes.jsp").forward(req, resp);
                 return;
             }
         } else {
