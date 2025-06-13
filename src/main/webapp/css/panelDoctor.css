@@ -1,0 +1,80 @@
+body {
+    background-color: #f8f9fc;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Tarjetas del panel */
+.dashboard-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    height: 100%;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card i {
+    font-size: 3rem;
+    color: #0d6efd; /* Azul Bootstrap */
+    margin-bottom: 1rem;
+}
+
+.dashboard-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #212529;
+}
+
+.dashboard-subtext {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+/* Footer */
+footer {
+    background-color: #f1f3f5;
+    padding: 2rem 0;
+    font-size: 0.9rem;
+    color: #495057;
+    margin-top: 3rem;
+}
+
+.footer-links a {
+    color: #0d6efd;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.social-icons a {
+    color: #0d6efd;
+    margin: 0 8px;
+    font-size: 1.1rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+/* Asegura que el contenido principal empuje el footer hacia abajo */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container.my-5 {
+    flex: 1;
+}
