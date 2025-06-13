@@ -16,9 +16,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><i class="fas fa-user-injured text-primary me-2"></i>Gestión de Pacientes</h2>
-        <a href="paciente?accion=nuevo" class="btn btn-success">
-            <i class="fas fa-plus me-2"></i>Nuevo Paciente
-        </a>
+
     </div>
 
     <!-- Mensajes -->
@@ -117,7 +115,7 @@
 
     <!-- Navegación -->
     <div class="mt-4 text-center">
-        <a href="panelPaciente.jsp" class="btn btn-secondary">
+        <a href="panelDoctor.jsp" class="btn btn-secondary">
             <i class="fas fa-home me-2"></i>Volver al Inicio
         </a>
     </div>

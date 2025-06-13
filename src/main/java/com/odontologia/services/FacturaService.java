@@ -10,4 +10,4 @@ public interface FacturaService {
     boolean eliminar(int idFactura);
     Factura buscarPorId(int idFactura);
     List<Factura> listarTodas();
-}
+}   

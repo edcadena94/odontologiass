@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: USUARIO
+  Date: 11/6/2025
+  Time: 16:05
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -54,7 +61,7 @@
 
         <!-- Ver Doctores -->
         <div class="col-md-4">
-            <a href="doctor" class="text-decoration-none">
+            <a href="listar-doctores.jsp" class="text-decoration-none">
                 <div class="dashboard-card">
                     <i class="fas fa-user-md"></i>
                     <div class="dashboard-title">Ver Doctores</div>
