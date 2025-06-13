@@ -16,7 +16,6 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><i class="fas fa-user-injured text-primary me-2"></i>Gestión de Pacientes</h2>
-
     </div>
 
     <!-- Mensajes -->
@@ -33,7 +32,7 @@
     <!-- Buscar -->
     <div class="card mb-4">
         <div class="card-body">
-            <form action="paciente" method="get" class="row g-3">
+            <form action="pacientes" method="get" class="row g-3">
                 <input type="hidden" name="accion" value="buscar">
                 <div class="col-md-9">
                     <input type="text" name="nombre" class="form-control"
@@ -66,9 +65,9 @@
                     </thead>
                     <tbody>
                     <%
-                        List<Paciente> listaPacientes = (List<Paciente>) request.getAttribute("listaPacientes");
-                        if (listaPacientes != null && !listaPacientes.isEmpty()) {
-                            for (Paciente paciente : listaPacientes) {
+                        List<Paciente> pacientes = (List<Paciente>) request.getAttribute("pacientes");
+                        if (pacientes != null && !pacientes.isEmpty()) {
+                            for (Paciente paciente : pacientes) {
                                 String sexoStr = paciente.getSexo() == 'M' || paciente.getSexo() == 'm' ? "Masculino" :
                                         paciente.getSexo() == 'F' || paciente.getSexo() == 'f' ? "Femenino" : "No especificado";
                     %>
@@ -80,11 +79,11 @@
                         <td><%= paciente.getEmail() != null ? paciente.getEmail() : "-" %></td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a href="paciente?accion=ver&id=<%= paciente.getIdPaciente() %>"
+                                <a href="pacientes?accion=ver&id=<%= paciente.getIdPaciente() %>"
                                    class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="paciente?accion=editar&id=<%= paciente.getIdPaciente() %>"
+                                <a href="pacientes?accion=editar&id=<%= paciente.getIdPaciente() %>"
                                    class="btn btn-outline-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -127,7 +126,7 @@
         if (confirm('¿Está seguro de eliminar este paciente?')) {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'paciente';
+            form.action = 'pacientes';
 
             const inputAccion = document.createElement('input');
             inputAccion.type = 'hidden';

@@ -3,12 +3,14 @@ package com.odontologia.controllers;
 import com.odontologia.models.Paciente;
 import com.odontologia.services.PacienteService;
 import com.odontologia.services.PacienteServiceJdbcImplement;
+import com.odontologia.util.Conexion;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -20,9 +22,14 @@ public class PacienteServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        // Obtener conexión desde contexto de la app (asegúrate que exista)
-        Connection conn = (Connection) getServletContext().getAttribute("conexion");
-        this.pacienteService = new PacienteServiceJdbcImplement(conn);
+        try {
+            Connection conn = Conexion.getConnection();
+            this.pacienteService = new PacienteServiceJdbcImplement(conn);
+            System.out.println("✅ Conexión establecida correctamente en PacienteServlet");
+        } catch (SQLException e) {
+            System.err.println("❌ Error al obtener conexión: " + e.getMessage());
+            throw new ServletException("No se pudo establecer conexión a la base de datos", e);
+        }
     }
 
     @Override
@@ -77,7 +84,7 @@ public class PacienteServlet extends HttpServlet {
         String email = req.getParameter("email");
         String telefono = req.getParameter("telefono");
         String direccion = req.getParameter("direccion");
-        String fechaNacStr = req.getParameter("fechaNacimiento");
+        String fechaNacStr = req.getParameter("fecha_nacimiento");
         String sexo = req.getParameter("sexo");
 
         Paciente paciente = new Paciente();
